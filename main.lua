@@ -8,14 +8,15 @@
 -- return table
 --
 function table.where(t, e)
-    local var, f, result, v = e:match('^(%w+)%s?'), loadstring('return '..e), {}, nil
-    local oldValue = rawget(_G, var)
+    local var, result, v = e:match('^(%w+)%s?'), {}, nil
+    local f = loadstring(e:gsub(var..'%s?[-=]>', 'return'))
+    local ov = rawget(_G, var)
     for i = 1, #t do
         v = rawget(t, i)
         rawset(_G, var, v)
         if f() then rawset(result, #result + 1, v) end
     end
-    rawset(_G, var, oldValue)
+    rawset(_G, var, ov)
     return result
 end
 
@@ -29,12 +30,13 @@ end
 -- return table
 --
 function table.select(t, e)
-    local var, f, result = e:match('^(%w+)%s?'), loadstring('return '..e), {}
-    local oldValue = rawget(_G, var)
+    local var, result, v = e:match('^(%w+)%s?'), {}, nil
+    local f = loadstring(e:gsub(var..'%s?[-=]>', 'return'))
+    local ov = rawget(_G, var)
     for i = 1, #t do
         rawset(_G, var, rawget(t, i))
         rawset(result, #result + 1, f())
     end
-    rawset(_G, var, oldValue)
+    rawset(_G, var, ov)
     return result
 end

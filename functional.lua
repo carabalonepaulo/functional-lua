@@ -69,7 +69,7 @@ end
 -- e    expressão
 -- return table
 --
-function table.select(t, e, s)
+function table.map(t, e, s)
     local var, result, v, f, ov, rt = table.__basefs(t, e, s)
     for i = 1, #t do
         rawset(_G, var, rawget(t, i))
